@@ -1,0 +1,125 @@
+{
+  "name": "narrator",
+  "version": "0.1.0",
+  "title": "Narrator",
+  "description": "Writes what other plugins found in a video as a timeline of plain sentences: who said what, how (loud, quiet, the emotion of the voice), how their face looked, what moved and what was in view. No model of any kind: the same findings always give the same text.",
+  "protocol": 2,
+  "platforms": ["windows-x86_64", "linux-x86_64", "linux-aarch64", "macos-aarch64"],
+  "effect": "pure",
+  "command": [
+    "../../dist/cargo/release/loomasplugins-narrator"
+  ],
+  "timeoutSeconds": 300,
+  "stallSeconds": 60,
+  "concurrency": 4,
+  "requirements": {
+    "cpu": 1,
+    "memoryMb": 100
+  },
+  "actions": {
+    "narrate": {
+      "description": "Joins the findings of other plugins by time and writes one line for each sentence (or each turn when there are no sentences), and one for each movement or thing in view while nobody speaks. Give each list as its plugin gives it; every list is optional.",
+      "title": "Narrate",
+      "category": "transform",
+      "icon": "text",
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "sentences": {
+            "title": "Sentences",
+            "type": "array",
+            "description": "What was said: the sentences of speech-to-text (startMs, endMs, text).",
+            "items": { "type": "object" },
+            "x-ui": { "group": "everyday" }
+          },
+          "turns": {
+            "title": "Turns",
+            "type": "array",
+            "description": "Who spoke when: the turns of speakers (startMs, endMs, label).",
+            "items": { "type": "object" },
+            "x-ui": { "group": "everyday" }
+          },
+          "tones": {
+            "title": "Voice tones",
+            "type": "array",
+            "description": "How it was said: the segments of voice-tone (startMs, endMs, loudness, emotion, emotionConfidence).",
+            "items": { "type": "object" },
+            "x-ui": { "group": "everyday" }
+          },
+          "expressions": {
+            "title": "Face expressions",
+            "type": "array",
+            "description": "How the faces looked: the expressions of face-emotion (startMs, endMs, face, label, confidence).",
+            "items": { "type": "object" },
+            "x-ui": { "group": "everyday" }
+          },
+          "movements": {
+            "title": "Movements",
+            "type": "array",
+            "description": "What moved: the movements of movement (startMs, endMs, label).",
+            "items": { "type": "object" },
+            "x-ui": { "group": "everyday" }
+          },
+          "scenes": {
+            "title": "In view",
+            "type": "array",
+            "description": "What was in view: the appearances of visual-phrases (phrase) or coco-objects (class), with startMs and endMs.",
+            "items": { "type": "object" },
+            "x-ui": { "group": "everyday" }
+          },
+          "minConfidence": {
+            "title": "Least confidence",
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "default": 0.5,
+            "description": "An emotion of a voice or an expression of a face less sure than this is not written (default 0.5).",
+            "x-ui": { "group": "advanced", "widget": "slider" }
+          },
+          "answerWithinMs": {
+            "title": "Answer within",
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 60000,
+            "default": 3000,
+            "description": "How soon after another person's question a line counts as its answer (default 3000).",
+            "x-ui": { "group": "advanced", "unit": "ms" }
+          }
+        },
+        "additionalProperties": false
+      },
+      "outputs": {
+        "type": "object",
+        "properties": {
+          "lines": {
+            "title": "Lines",
+            "type": "array",
+            "description": "The narration, one line for each thing said or happening, in the order they start.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "startMs": { "title": "Start", "type": "integer", "minimum": 0 },
+                "endMs": { "title": "End", "type": "integer", "minimum": 0 },
+                "text": { "title": "Line", "type": "string" },
+                "speaker": { "title": "Speaker", "type": ["string", "null"], "description": "Who speaks in the line, as the narration names them; null for a line of what happened while nobody spoke." }
+              },
+              "required": ["startMs", "endMs", "text", "speaker"]
+            },
+            "x-ui": { "type": "timedText" }
+          },
+          "text": { "title": "Narration", "type": "string", "description": "The lines one after another, a line each." },
+          "people": {
+            "title": "People",
+            "type": "array",
+            "description": "Each speaker: speaker (the label of the turns), name (as the narration calls them: a name given, or Person A, Person B...) and face (the face of face-emotion taken for theirs, or null).",
+            "items": { "type": "object" }
+          }
+        },
+        "required": ["lines", "text", "people"]
+      },
+      "failures": [
+        { "code": 400, "description": "A param is wrong, or an item of a list lacks startMs, endMs or the field the narrator reads." }
+      ]
+    }
+  }
+}

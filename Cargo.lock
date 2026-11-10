@@ -672,6 +672,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "loomasplugins-narrator"
+version = "0.0.0"
+dependencies = [
+ "loomasplugins-plugin-sdk",
+ "serde_json",
+]
+
+[[package]]
 name = "loomasplugins-on-screen-text"
 version = "0.0.0"
 dependencies = [

@@ -1,0 +1,12 @@
+[package]
+name = "loomasplugins-narrator"
+version = "0.0.0"
+edition = "2021"
+publish = false
+
+[package.metadata.smith]
+kind = "app"
+
+[dependencies]
+serde_json = "1"
+loomasplugins-plugin-sdk = { path = "../../libs/plugin-sdk" }
