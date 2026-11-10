@@ -619,6 +619,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "loomasplugins-face-emotion"
+version = "0.0.0"
+dependencies = [
+ "loomasplugins-frame-reader",
+ "loomasplugins-model-cache",
+ "loomasplugins-onnx-device",
+ "loomasplugins-picture-ops",
+ "loomasplugins-plugin-sdk",
+ "ort",
+ "serde_json",
+]
+
+[[package]]
 name = "loomasplugins-frame-reader"
 version = "0.0.0"
 dependencies = [
