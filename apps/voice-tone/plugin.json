@@ -1,0 +1,149 @@
+{
+  "name": "voice-tone",
+  "version": "0.1.0",
+  "title": "Voice tone",
+  "description": "How each stretch of speech in a video is said: how loud against the usual speech of the video, and with which emotion (angry, calm, disgust, fear, happy, neutral, sad, surprise). No language model.",
+  "protocol": 2,
+  "platforms": ["windows-x86_64", "linux-x86_64", "linux-aarch64", "macos-aarch64"],
+  "effect": "pure",
+  "command": [
+    "../../dist/cargo/release/loomasplugins-voice-tone"
+  ],
+  "timeoutSeconds": 3600,
+  "stallSeconds": 120,
+  "concurrency": 1,
+  "requirements": {
+    "cpu": 2,
+    "memoryMb": 1000
+  },
+  "permissions": {
+    "env": [
+      "LOOMAS_MODELS"
+    ],
+    "network": [
+      "huggingface.co",
+      "us.aws.cdn.hf.co",
+      "cas-bridge.xethub.hf.co"
+    ],
+    "write": [
+      "~/.loomas/models"
+    ]
+  },
+  "actions": {
+    "measure": {
+      "description": "How each stretch of speech is said: its loudness against the usual speech of the video (low, normal, loud) and the emotion of the voice. Give the sentences of speech-to-text or the turns of speakers in segments to measure them as they are; with none, the sound is measured in windows.",
+      "title": "Measure the voice tone",
+      "category": "find",
+      "icon": "sound",
+      "wants": {
+        "media": {
+          "media": "audio",
+          "sampleRate": 16000,
+          "channels": 1
+        }
+      },
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "media": {
+            "title": "Video or sound",
+            "type": ["object", "string"],
+            "description": "The video or sound: a stored file or a video as media.open gives it, or a path in text. Loomas decodes its sound to 16 kHz, one channel.",
+            "x-ui": { "group": "everyday" }
+          },
+          "segments": {
+            "title": "Stretches to measure",
+            "type": "array",
+            "description": "The stretches of speech to measure, each with startMs and endMs: the sentences of speech-to-text or the turns of speakers, as they are (their other fields are kept). Leave it out to measure the sound in windows.",
+            "maxItems": 20000,
+            "items": {
+              "type": "object",
+              "properties": {
+                "startMs": { "type": "integer", "minimum": 0 },
+                "endMs": { "type": "integer", "minimum": 0 }
+              },
+              "required": ["startMs", "endMs"]
+            },
+            "x-ui": { "group": "everyday" }
+          },
+          "windowMs": {
+            "title": "Window",
+            "type": "integer",
+            "minimum": 1000,
+            "maximum": 30000,
+            "default": 3000,
+            "description": "How long each window is when no segments are given (default 3000).",
+            "x-ui": { "group": "advanced", "unit": "ms" }
+          },
+          "loudDb": {
+            "title": "Loud or low from",
+            "type": "number",
+            "minimum": 2,
+            "maximum": 20,
+            "default": 6,
+            "description": "How many dB above the usual speech of the video counts as loud, and below as low (default 6).",
+            "x-ui": { "group": "advanced", "unit": "dB" }
+          },
+          "emotions": {
+            "title": "Tell the emotion",
+            "type": "boolean",
+            "default": true,
+            "description": "Tell the emotion of each stretch (default true). Without it only the loudness is measured and no model is downloaded.",
+            "x-ui": { "group": "advanced" }
+          },
+          "device": {
+            "title": "Run on",
+            "type": "string",
+            "enum": ["auto", "cpu", "gpu"],
+            "default": "cpu",
+            "description": "Where the emotion model runs: cpu (the default), or gpu / auto, which use the graphics card (on Windows, any DirectX 12 card). A card that cannot be used falls back to the processor; the result says what ran.",
+            "x-ui": {
+              "group": "advanced",
+              "enumTitles": { "auto": "Automatic", "cpu": "Processor", "gpu": "Graphics card" }
+            }
+          }
+        },
+        "required": ["media"],
+        "additionalProperties": false
+      },
+      "outputs": {
+        "type": "object",
+        "properties": {
+          "segments": {
+            "title": "Stretches",
+            "type": "array",
+            "description": "The stretches given, with their fields and the tone added, or the windows with speech when none were given. A value that cannot be measured is null.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "startMs": { "title": "Start", "type": "integer", "minimum": 0 },
+                "endMs": { "title": "End", "type": "integer", "minimum": 0 },
+                "loudnessDb": { "title": "Level", "type": ["number", "null"], "description": "How loud the speech is, in dB below full scale (pauses between words left out); null for silence." },
+                "relativeDb": { "title": "Against the usual", "type": ["number", "null"], "description": "loudnessDb less referenceDb." },
+                "loudness": { "title": "Loudness", "type": ["string", "null"], "enum": ["low", "normal", "loud", null] },
+                "emotion": { "title": "Emotion", "type": ["string", "null"], "enum": ["angry", "calm", "disgust", "fear", "happy", "neutral", "sad", "surprise", null], "description": "The likeliest emotion; null for silence or a stretch under half a second. Left out when emotions is false." },
+                "emotionConfidence": { "title": "Emotion confidence", "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+                "emotions": { "title": "Every emotion", "type": ["object", "null"], "description": "The probability of each emotion." }
+              },
+              "required": ["startMs", "endMs", "loudnessDb", "relativeDb", "loudness"]
+            }
+          },
+          "referenceDb": { "title": "Usual level", "type": ["number", "null"], "description": "The middle level of the stretches with speech: what normal is for this video." },
+          "durationMs": { "title": "Length", "type": "integer", "minimum": 0 },
+          "device": {
+            "title": "What it ran on",
+            "type": ["object", "null"],
+            "description": "What the emotion model really ran on: device, name (the graphics card, if one was used) and fallback (why not). Null when it did not run."
+          }
+        },
+        "required": ["segments", "referenceDb", "durationMs"]
+      },
+      "failures": [
+        { "code": 400, "description": "A param is wrong, a segment has no valid startMs and endMs, or media is missing or not sound Loomas decoded for the plugin." },
+        { "code": 422, "description": "A file cannot be read or the model cannot be loaded." },
+        { "code": 503, "description": "The model could not be downloaded (it is fetched once, on first use). Trying again may work." },
+        { "code": "CANCELLED", "description": "The call was cancelled." }
+      ]
+    }
+  }
+}

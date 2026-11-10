@@ -104,6 +104,11 @@ build = "sh tools/pack-plugin.sh speakers"
 assets = ["out/speakers-*.loomp"]
 platforms = ["windows-x64", "macos-arm64", "linux-x64", "linux-arm64"]
 
+[projects.voice-tone.release]
+build = "sh tools/pack-plugin.sh voice-tone"
+assets = ["out/voice-tone-*.loomp"]
+platforms = ["windows-x64", "macos-arm64", "linux-x64", "linux-arm64"]
+
 [projects.sound-events.release]
 build = "sh tools/pack-plugin.sh sound-events"
 assets = ["out/sound-events-*.loomp"]

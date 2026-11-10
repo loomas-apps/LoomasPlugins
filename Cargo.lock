@@ -830,6 +830,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "loomasplugins-voice-tone"
+version = "0.0.0"
+dependencies = [
+ "loomasplugins-model-cache",
+ "loomasplugins-onnx-device",
+ "loomasplugins-plugin-sdk",
+ "loomasplugins-sound-reader",
+ "ort",
+ "serde_json",
+]
+
+[[package]]
 name = "loomasplugins-work-files"
 version = "0.0.0"
 dependencies = [
