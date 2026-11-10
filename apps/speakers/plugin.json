@@ -1,0 +1,185 @@
+{
+  "name": "speakers",
+  "version": "0.1.0",
+  "title": "Find speakers",
+  "description": "Finds who speaks when in a video, gives each voice a pattern file and a sample to listen to, and names the voices it knows from earlier runs. No language model.",
+  "protocol": 2,
+  "platforms": ["windows-x86_64", "linux-x86_64", "linux-aarch64", "macos-aarch64"],
+  "effect": "pure",
+  "command": [
+    "../../dist/cargo/release/loomasplugins-speakers"
+  ],
+  "timeoutSeconds": 3600,
+  "stallSeconds": 120,
+  "concurrency": 1,
+  "requirements": {
+    "cpu": 2,
+    "memoryMb": 800
+  },
+  "permissions": {
+    "env": [
+      "LOOMAS_MODELS"
+    ],
+    "network": [
+      "huggingface.co",
+      "us.aws.cdn.hf.co",
+      "cas-bridge.xethub.hf.co"
+    ],
+    "write": [
+      "~/.loomas/models"
+    ]
+  },
+  "actions": {
+    "find": {
+      "description": "Finds who speaks when in a video, with no language model. Each voice gets an id (voice-1, voice-2...), a pattern (voice.json) and a sample to listen to. Type a name in a pattern and give it back in voices the next time: the turns of that voice then carry the name, and the pattern learns from the new speech.",
+      "title": "Find speakers",
+      "category": "find",
+      "icon": "sound",
+      "wants": {
+        "media": {
+          "media": "audio",
+          "sampleRate": 16000,
+          "channels": 1
+        }
+      },
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "media": {
+            "title": "Video or sound",
+            "type": ["object", "string"],
+            "description": "The video or sound: a stored file or a video as media.open gives it, or a path in text. Loomas decodes its sound to 16 kHz, one channel.",
+            "x-ui": { "group": "everyday" }
+          },
+          "voices": {
+            "title": "Known voices",
+            "type": "array",
+            "description": "Voice patterns from earlier runs: the folder of a voice (with its voice.json), the voice.json itself, or its content. A voice that matches one takes its name.",
+            "maxItems": 100,
+            "items": { "type": ["object", "string"] },
+            "x-ui": { "group": "everyday" }
+          },
+          "maxSpeakers": {
+            "title": "Most speakers",
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 50,
+            "default": 0,
+            "description": "The most voices to report; 0 lets the plugin decide (default 0).",
+            "x-ui": { "group": "everyday" }
+          },
+          "minSimilarity": {
+            "title": "Least similarity to name a voice",
+            "type": "number",
+            "minimum": 0.1,
+            "maximum": 1,
+            "default": 0.5,
+            "description": "How similar a voice must be to a known pattern to take its name, from 0.1 to 1 (default 0.5).",
+            "x-ui": { "group": "advanced", "widget": "slider" }
+          },
+          "learn": {
+            "title": "Learn known voices",
+            "type": "boolean",
+            "default": true,
+            "description": "Let a known pattern learn from the new speech of its voice (default true). The pattern you gave is not changed: the result has the learned copy.",
+            "x-ui": { "group": "advanced" }
+          },
+          "learnSimilarity": {
+            "title": "Least similarity to learn",
+            "type": "number",
+            "minimum": 0.1,
+            "maximum": 1,
+            "default": 0.65,
+            "description": "How similar a voice must be to its pattern for the pattern to learn from it; at least minSimilarity (default 0.65). Higher keeps a doubtful match from changing a pattern.",
+            "x-ui": { "group": "advanced", "widget": "slider" }
+          },
+          "files": {
+            "title": "Write the voice files",
+            "type": "boolean",
+            "default": true,
+            "description": "Write voice.json and a sample WAV for each voice (default true).",
+            "x-ui": { "group": "advanced" }
+          },
+          "sampleMs": {
+            "title": "Longest sample",
+            "type": "integer",
+            "minimum": 2000,
+            "maximum": 30000,
+            "default": 8000,
+            "description": "The longest sample of a voice (default 8000).",
+            "x-ui": { "group": "advanced", "unit": "ms" }
+          },
+          "device": {
+            "title": "Run on",
+            "type": "string",
+            "enum": ["auto", "cpu", "gpu"],
+            "default": "cpu",
+            "description": "Where the models run: cpu (the default), or gpu / auto, which use the graphics card (on Windows, any DirectX 12 card). A card that cannot be used falls back to the processor; the result says what ran.",
+            "x-ui": {
+              "group": "advanced",
+              "enumTitles": { "auto": "Automatic", "cpu": "Processor", "gpu": "Graphics card" }
+            }
+          }
+        },
+        "required": ["media"],
+        "additionalProperties": false
+      },
+      "outputs": {
+        "type": "object",
+        "properties": {
+          "turns": {
+            "title": "Turns",
+            "type": "array",
+            "description": "When each voice speaks, in the order the turns start. Two voices can speak at once.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "label": { "title": "Speaker", "type": "string", "description": "The name of a known voice, or its id." },
+                "voice": { "title": "Voice id", "type": "string" },
+                "startMs": { "title": "Start", "type": "integer", "minimum": 0 },
+                "endMs": { "title": "End", "type": "integer", "minimum": 0 },
+                "confidence": { "title": "Confidence", "type": "number", "minimum": 0, "maximum": 1, "description": "How sure the speech model was, on average over the turn." }
+              },
+              "required": ["label", "voice", "startMs", "endMs", "confidence"]
+            },
+            "x-ui": { "type": "timedLabel" }
+          },
+          "voices": {
+            "title": "Voices",
+            "type": "array",
+            "description": "One for each voice heard, in the order they first speak.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "voice": { "title": "Voice id", "type": "string" },
+                "name": { "title": "Name", "type": ["string", "null"], "description": "The name of its pattern, or null for a voice nobody named yet." },
+                "known": { "title": "Known", "type": "boolean", "description": "Whether it matched a pattern given in voices." },
+                "similarity": { "title": "Similarity", "type": ["number", "null"], "description": "How similar it was to its pattern, or null." },
+                "learned": { "title": "Learned", "type": "boolean", "description": "Whether its pattern learned from this video." },
+                "seconds": { "title": "Seconds heard", "type": "number", "minimum": 0 },
+                "pattern": { "title": "Pattern", "type": "object", "description": "The content of its voice.json: kind, format, model, id, name, seconds, print." },
+                "patternFile": { "title": "Pattern file", "type": "object", "description": "voice.json as a stored file. Left out when files is false." },
+                "sample": { "title": "Sample", "type": "object", "description": "A WAV of the voice to listen to. Left out when files is false." }
+              },
+              "required": ["voice", "name", "known", "similarity", "learned", "seconds", "pattern"]
+            }
+          },
+          "durationMs": { "title": "Length", "type": "integer", "minimum": 0 },
+          "device": {
+            "title": "What it ran on",
+            "type": ["object", "null"],
+            "description": "What the voice print model really ran on: device, name (the graphics card, if one was used) and fallback (why not). Null when there was no sound."
+          }
+        },
+        "required": ["turns", "voices", "durationMs"]
+      },
+      "failures": [
+        { "code": 400, "description": "A param is wrong, a voice pattern is not one (or comes from another model), or media is missing or not sound Loomas decoded for the plugin." },
+        { "code": 404, "description": "A voice pattern file is not there." },
+        { "code": 422, "description": "A file cannot be read, the model cannot be loaded, or there is no folder for the voice files." },
+        { "code": 503, "description": "A model could not be downloaded (they are fetched once, on first use). Trying again may work." },
+        { "code": "CANCELLED", "description": "The call was cancelled." }
+      ]
+    }
+  }
+}

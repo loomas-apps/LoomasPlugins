@@ -99,6 +99,11 @@ build = "sh tools/pack-plugin.sh sound-clean"
 assets = ["out/sound-clean-*.loomp"]
 platforms = ["windows-x64", "macos-arm64", "macos-x64", "linux-x64", "linux-arm64"]
 
+[projects.speakers.release]
+build = "sh tools/pack-plugin.sh speakers"
+assets = ["out/speakers-*.loomp"]
+platforms = ["windows-x64", "macos-arm64", "linux-x64", "linux-arm64"]
+
 [projects.sound-events.release]
 build = "sh tools/pack-plugin.sh sound-events"
 assets = ["out/sound-events-*.loomp"]

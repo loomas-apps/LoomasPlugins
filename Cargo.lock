@@ -755,6 +755,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "loomasplugins-speakers"
+version = "0.0.0"
+dependencies = [
+ "loomasplugins-model-cache",
+ "loomasplugins-onnx-device",
+ "loomasplugins-plugin-sdk",
+ "loomasplugins-sound-reader",
+ "loomasplugins-work-files",
+ "ort",
+ "realfft",
+ "serde_json",
+]
+
+[[package]]
 name = "loomasplugins-thumbnail"
 version = "0.0.0"
 dependencies = [
