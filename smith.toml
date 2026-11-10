@@ -172,6 +172,13 @@ install = false
 assets = ["out/narrate-video-*.loomp"]
 platforms = ["linux-x64"]
 
+[projects.whisper.release]
+# Built with Vulkan by tools/build-whisper.sh (needs the Vulkan SDK and libclang on the runner), then
+# packed with that program.
+build = "sh tools/build-whisper.sh && sh tools/pack-plugin.sh whisper prebuilt"
+assets = ["out/whisper-*.loomp"]
+platforms = ["windows-x64", "linux-x64"]
+
 # A plugin is released as a GitHub Release with its .loomp package, never to PyPI.
 [projects.speech-to-text]
 registry = "none"

@@ -1,0 +1,19 @@
+[package]
+name = "loomasplugins-whisper"
+version = "0.0.0"
+edition = "2021"
+publish = false
+
+[package.metadata.smith]
+kind = "app"
+
+[dependencies]
+serde_json = "1"
+whisper-rs = "0.16"
+loomasplugins-model-cache = { path = "../../libs/model-cache" }
+loomasplugins-plugin-sdk = { path = "../../libs/plugin-sdk" }
+loomasplugins-sound-reader = { path = "../../libs/sound-reader" }
+
+[features]
+# The graphics card through Vulkan (AMD, NVIDIA, Intel). Building it needs the Vulkan SDK.
+vulkan = ["whisper-rs/vulkan"]

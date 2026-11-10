@@ -1,6 +1,7 @@
 #!/bin/sh
 # Packs one plugin as out/<plugin>-<version>-<platform>.loomp for the release assets.
-# Usage: tools/pack-plugin.sh <plugin folder name> [rust|python|flow] (flow: a plugin made of a flow); SMITH_PLATFORM and SMITH_VERSION are
+# Usage: tools/pack-plugin.sh <plugin folder name> [rust|python|flow|prebuilt] (flow: a plugin made of a flow;
+# prebuilt: a Rust plugin whose program a build script already put in dist/cargo/release); SMITH_PLATFORM and SMITH_VERSION are
 # set by `smith release assets`. With SMITH_VERSION the package says that version in its plugin.json (the
 # folder in the repository keeps the version it has); without it the folder is packed as it is.
 # loomas is private: $LOOMAS is the Loomas checkout the pipeline puts beside this repository.
@@ -30,7 +31,7 @@ if [ "$kind" = python ] || [ "$kind" = flow ]; then
   "$loomas" plugins pack "$folder" --platform any --out out
 else
   crate="loomasplugins-$app"
-  cargo build --release -p "$crate"
+  [ "$kind" = prebuilt ] || cargo build --release -p "$crate"
   program="dist/cargo/release/$crate"
   [ -f "$program.exe" ] && program="$program.exe"
   "$loomas" plugins pack "$folder" --program "$program" --out out

@@ -24,6 +24,7 @@ Then [docs/writing-good-plugins.md](docs/writing-good-plugins.md): guidance, not
 
 | Plugin | Language | What it does |
 |---|---|---|
+| [whisper](apps/whisper) | Rust | writes down the sentences said, with their times, like speech-to-text, with whisper.cpp; runs on a graphics card through Vulkan (AMD, NVIDIA, Intel) or on the processor |
 | [speech-to-text](apps/speech-to-text) | Python | writes down the sentences said, with their times (faster-whisper; can be run a window at a time) |
 | [sound-volume](apps/sound-volume) | Rust | how loud a sound is over time, with the low, mid and high bands, and where it is silent |
 | [sound-graph](apps/sound-graph) | Rust | draws the waves of a sound as an SVG, with the sentences marked |
