@@ -164,6 +164,14 @@ build = "sh tools/pack-plugin.sh on-screen-text"
 assets = ["out/on-screen-text-*.loomp"]
 platforms = ["windows-x64", "macos-arm64", "linux-x64", "linux-arm64"]
 
+[projects.narrate-video.release]
+# A plugin made of a flow: the package holds the flow and the manifest, for every platform. It needs a
+# Loomas core with plugins made of flows (loomas-apps/Loomas#107).
+build = "sh tools/pack-plugin.sh narrate-video flow"
+install = false
+assets = ["out/narrate-video-*.loomp"]
+platforms = ["linux-x64"]
+
 # A plugin is released as a GitHub Release with its .loomp package, never to PyPI.
 [projects.speech-to-text]
 registry = "none"

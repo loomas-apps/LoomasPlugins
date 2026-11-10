@@ -1,0 +1,125 @@
+{
+  "name": "narrate-video",
+  "version": "0.1.0",
+  "title": "Narrate a video",
+  "protocol": 2,
+  "effect": "pure",
+  "requires": {
+    "face-emotion": "0.1.0",
+    "narrator": "0.1.0",
+    "speakers": "0.1.0",
+    "speech-to-text": "0.1.0",
+    "voice-tone": "0.1.0"
+  },
+  "actions": {
+    "narrate": {
+      "title": "Narrate a video",
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "media": {
+            "title": "Video or sound",
+            "type": "string",
+            "description": "The file to narrate: a video, or a sound with people talking."
+          },
+          "model": {
+            "title": "Speech model",
+            "type": "string",
+            "default": "base.en",
+            "description": "The speech-to-text model (base.en, small, medium...)."
+          },
+          "language": {
+            "title": "Language",
+            "type": "string",
+            "default": "en",
+            "description": "The language people speak, as a code (en, pt...)."
+          },
+          "voices": {
+            "title": "Known voices",
+            "type": "array",
+            "items": {},
+            "default": [],
+            "description": "Voice folders or patterns of speakers, so known people are named (see the speakers plugin)."
+          }
+        },
+        "required": [
+          "media"
+        ],
+        "additionalProperties": false
+      },
+      "outputs": {
+        "type": "object",
+        "properties": {
+          "lines": {
+            "title": "Lines",
+            "type": "array",
+            "description": "The narration, one line for each thing said or happening, in the order they start.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "startMs": {
+                  "title": "Start",
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "endMs": {
+                  "title": "End",
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "text": {
+                  "title": "Line",
+                  "type": "string"
+                },
+                "speaker": {
+                  "title": "Speaker",
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "description": "Who speaks in the line, as the narration names them; null for a line of what happened while nobody spoke."
+                }
+              },
+              "required": [
+                "startMs",
+                "endMs",
+                "text",
+                "speaker"
+              ]
+            },
+            "x-ui": {
+              "type": "timedText"
+            }
+          },
+          "text": {
+            "title": "Narration",
+            "type": "string",
+            "description": "The lines one after another, a line each."
+          },
+          "people": {
+            "title": "People",
+            "type": "array",
+            "description": "Each speaker: speaker (the label of the turns), name (as the narration calls them: a name given, or Person A, Person B...) and face (the face of face-emotion taken for theirs, or null).",
+            "items": {
+              "type": "object"
+            }
+          }
+        },
+        "required": [
+          "lines",
+          "text",
+          "people"
+        ]
+      },
+      "flow": "flow.loom",
+      "description": "Writes what happens in a video as plain sentences: who said what, how loud and in what tone, and how their face looked. Made of the speech-to-text, speakers, voice-tone, face-emotion and narrator plugins.",
+      "failures": [
+        {
+          "code": 400,
+          "description": "An input is wrong. A failure of a step inside the flow fails the step that called the plugin, with the name of the inner step and its error."
+        }
+      ]
+    }
+  },
+  "description": "Writes what happens in a video as plain sentences: who said what, how loud and in what tone, and how their face looked. Made of the speech-to-text, speakers, voice-tone, face-emotion and narrator plugins."
+}

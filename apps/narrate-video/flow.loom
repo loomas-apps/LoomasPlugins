@@ -1,0 +1,59 @@
+{
+  "name": "narrate_video",
+  "triggers": {
+    "call": {
+      "type": "Call",
+      "inputs": {
+        "schema": {
+          "type": "object",
+          "properties": {
+            "media": { "title": "Video or sound", "type": "string", "description": "The file to narrate: a video, or a sound with people talking." },
+            "model": { "title": "Speech model", "type": "string", "default": "base.en", "description": "The speech-to-text model (base.en, small, medium...)." },
+            "language": { "title": "Language", "type": "string", "default": "en", "description": "The language people speak, as a code (en, pt...)." },
+            "voices": { "title": "Known voices", "type": "array", "items": {}, "default": [], "description": "Voice folders or patterns of speakers, so known people are named (see the speakers plugin)." }
+          },
+          "required": ["media"],
+          "additionalProperties": false
+        }
+      }
+    }
+  },
+  "actions": {
+    "Open": { "type": "media.open", "inputs": { "path": "@triggerBody().media" } },
+    "Sound": {
+      "type": "If",
+      "runAfter": { "Open": ["Succeeded"] },
+      "expression": "@body('Open').hasAudio",
+      "actions": {
+        "Words": { "type": "speech-to-text.transcribe", "inputs": { "media": "@body('Open')", "model": "@triggerBody().model", "language": "@triggerBody().language" } },
+        "Who": { "type": "speakers.find", "inputs": { "media": "@body('Open')", "voices": "@triggerBody().voices", "files": false } },
+        "Tone": { "type": "voice-tone.measure", "runAfter": { "Words": ["Succeeded"] }, "inputs": { "media": "@body('Open')", "segments": "@body('Words').sentences" } }
+      },
+      "else": { "actions": {} }
+    },
+    "Picture": {
+      "type": "If",
+      "runAfter": { "Open": ["Succeeded"] },
+      "expression": "@body('Open').hasVideo",
+      "actions": {
+        "Faces": { "type": "face-emotion.find", "inputs": { "media": "@body('Open')" } }
+      },
+      "else": { "actions": {} }
+    },
+    "Tell": {
+      "type": "narrator.narrate",
+      "runAfter": { "Sound": ["Succeeded"], "Picture": ["Succeeded"] },
+      "inputs": {
+        "sentences": "@if(body('Open').hasAudio, body('Words').sentences, createArray())",
+        "turns": "@if(body('Open').hasAudio, body('Who').turns, createArray())",
+        "tones": "@if(body('Open').hasAudio, body('Tone').segments, createArray())",
+        "expressions": "@if(body('Open').hasVideo, body('Faces').expressions, createArray())"
+      }
+    }
+  },
+  "outputs": {
+    "lines": { "type": "array", "value": "@body('Tell').lines" },
+    "text": { "type": "string", "value": "@body('Tell').text" },
+    "people": { "type": "array", "value": "@body('Tell').people" }
+  }
+}

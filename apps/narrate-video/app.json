@@ -1,0 +1,5 @@
+{
+  "name": "narrate-video",
+  "version": "0.1.0",
+  "dependsOn": ["speech-to-text", "speakers", "voice-tone", "narrator"]
+}
