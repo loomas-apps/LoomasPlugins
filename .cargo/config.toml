@@ -1,3 +1,8 @@
 # Every build goes to the workspace's dist/ (smith).
 [build]
 target-dir = "dist/cargo"
+
+[env]
+# The cmake crate builds C and C++ libraries (whisper.cpp) without optimisation under MSVC; this
+# CMake toolchain file puts /O2 back. The name makes it apply to the MSVC target only.
+CMAKE_TOOLCHAIN_FILE_x86_64_pc_windows_msvc = { value = "tools/whisper-msvc.cmake", relative = true }

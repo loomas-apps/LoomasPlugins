@@ -13,6 +13,13 @@ use super::read_transcribe_options_mapper::read_transcribe_options;
 /// The rate whisper.cpp listens at.
 const RATE: u32 = 16_000;
 
+/// The processor threads whisper.cpp uses: one for each physical core (half the logical ones), at
+/// most 8. With every logical processor it ran four times slower on a 16-thread processor (3.9 s
+/// with 8 threads, 4.8 s with 4, 16.5 s with 16, for 36 s of speech).
+fn thread_count(logical: usize) -> i32 {
+    i32::try_from((logical / 2).clamp(1, 8)).unwrap_or(8)
+}
+
 /// Tells whisper.cpp to stop when the call was cancelled; `data` points to the call's `Cancel`.
 unsafe extern "C" fn stop_when_cancelled(data: *mut std::ffi::c_void) -> bool {
     // SAFETY: `transcribe` passes a pointer to a `Cancel` that lives while whisper.cpp runs.
@@ -92,8 +99,9 @@ pub fn transcribe(params: &Value, cancel: &Cancel) -> Result<Value, Failure> {
     full.set_print_progress(false);
     full.set_print_realtime(false);
     full.set_print_timestamps(false);
-    let threads = std::thread::available_parallelism().map_or(4, std::num::NonZeroUsize::get);
-    full.set_n_threads(i32::try_from(threads).unwrap_or(4));
+    let threads =
+        thread_count(std::thread::available_parallelism().map_or(2, std::num::NonZeroUsize::get));
+    full.set_n_threads(threads);
     // The safe abort callback of whisper-rs 0.16 crashes when whisper.cpp calls it, so the raw one
     // reads the call's `Cancel` through a pointer; `cancel` outlives `state.full` below.
     // SAFETY: the pointer is to a `Cancel` borrowed for this whole function, and whisper.cpp calls
@@ -158,4 +166,22 @@ pub fn transcribe(params: &Value, cancel: &Cancel) -> Result<Value, Failure> {
     answer["text"] = json!(text);
     answer["sentences"] = Value::Array(sentences);
     Ok(answer)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn whisper_uses_one_thread_for_each_physical_core_and_at_most_eight() {
+        assert_eq!(
+            (
+                thread_count(16),
+                thread_count(32),
+                thread_count(4),
+                thread_count(1)
+            ),
+            (8, 8, 2, 1)
+        );
+    }
 }

@@ -23,20 +23,22 @@ It gives `{ language, durationMs, model, text, sentences, device }`. A sentence 
 
 ## Which model
 
-Measured on 2026-11-10, on a video of 3 min 44 s in Portuguese, with people talking over music, on an AMD Radeon RX 7900 XT and a 16-thread processor:
+Measured on 2026-11-11, on a video of 3 min 44 s in Portuguese, with people talking over music, on an AMD Radeon RX 7900 XT and a 16-thread processor. The times include loading the model:
 
 | Model | Where | Time | What it heard |
 |---|---|---|---|
-| `base` | the card | 6.5 s | music only (`[Música]`) |
-| `large-v3-turbo` | the card | 15.6 s, the model loaded included | the speech, correctly, with a few repeated shouts |
-| `base` | the processor | 2 min 47 s | music only |
+| `base` | the card | 4.4 s | music only (`[Música]`) |
+| `large-v3-turbo` | the card | 9.8 s | the speech, correctly, with a few repeated shouts |
+| `base` | the processor | 14.9 s | music only |
 | `base.en` in speech-to-text | the processor | 22 s | English words that were not said |
+
+On 36 s of clear English speech with `base.en` on the processor, it takes 3.5 s, and speech-to-text 7.4 s.
 
 So, for a language other than English or for speech over noise, use `large-v3-turbo` on a card (1.6 GB, downloaded once). The small models are fast but miss speech under music. Always give `language` when you know it.
 
 ## Building
 
-The processor build is a normal `cargo build --release -p loomasplugins-whisper`. It needs CMake, a C++ compiler and libclang (on Windows, LLVM: `winget install LLVM.LLVM`, then `LIBCLANG_PATH` set to its `bin` folder).
+The processor build is a normal `cargo build --release -p loomasplugins-whisper`. It needs CMake, a C++ compiler and libclang (on Windows, LLVM: `winget install LLVM.LLVM`, then `LIBCLANG_PATH` set to its `bin` folder). On Windows, `.cargo/config.toml` gives CMake the toolchain file `tools/whisper-msvc.cmake`: without it, the `cmake` crate compiles whisper.cpp with no optimisation, and it runs about ten times slower.
 
 The graphics card build needs the Vulkan SDK too (`winget install KhronosGroup.VulkanSDK`). Make it with:
 
@@ -49,7 +51,7 @@ On Windows, the folders whisper.cpp makes inside `dist/cargo` pass the 260-chara
 ## What to expect
 
 - **Repetition.** Whisper can repeat a word or a shout many times in a long, noisy stretch. Read the confidence of each sentence.
-- **The processor build is slow** here: 2 min 47 s for what speech-to-text does in 22 s. The reason is not known yet (it may be how whisper.cpp is compiled with MSVC). Use speech-to-text on a computer without a graphics card.
+- **Threads.** On the processor it uses one thread for each physical core (half the logical processors, at most 8). With every logical processor it was four times slower.
 - **The card's name** is not given yet (`device.name` is null). whisper.cpp writes it in its log.
 - **Tested** only on Windows, with an AMD card. Not tried on Linux, on NVIDIA or Intel cards, or on macOS.
 
