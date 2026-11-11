@@ -3,6 +3,14 @@
   "version": "0.1.0",
   "title": "Speech to text",
   "description": "Writes down what is said in a video or a sound, with the time each sentence starts and ends.",
+  "category": "speech",
+  "tags": [
+    "transcription",
+    "subtitles",
+    "whisper",
+    "language"
+  ],
+  "home": "home.md",
   "protocol": 2,
   "effect": "pure",
   "command": [
@@ -46,7 +54,6 @@
     "transcribe": {
       "description": "Writes down the sentences said in a video or a sound, with the time each starts and ends. The core may run it a window of the media at a time and join the result: the sentences are joined, text is put together from them and durationMs is the whole media's; language and model are the first window's.",
       "title": "Transcribe speech",
-      "category": "find",
       "icon": "speech",
       "wants": {
         "media": {
@@ -89,8 +96,21 @@
             "default": "tiny",
             "x-ui": {
               "group": "everyday",
-              "widget": "select"
-            }
+              "widget": "select",
+              "type": "speechModel"
+            },
+            "enum": [
+              "tiny",
+              "tiny.en",
+              "base",
+              "base.en",
+              "small",
+              "small.en",
+              "medium",
+              "medium.en",
+              "large-v3",
+              "large-v3-turbo"
+            ]
           },
           "language": {
             "title": "Language spoken",
@@ -98,8 +118,111 @@
             "description": "The language as a code such as en or pt (default: found out from the first seconds).",
             "x-ui": {
               "group": "everyday",
-              "widget": "select"
-            }
+              "widget": "select",
+              "type": "language"
+            },
+            "enum": [
+              "en",
+              "zh",
+              "de",
+              "es",
+              "ru",
+              "ko",
+              "fr",
+              "ja",
+              "pt",
+              "tr",
+              "pl",
+              "ca",
+              "nl",
+              "ar",
+              "sv",
+              "it",
+              "id",
+              "hi",
+              "fi",
+              "vi",
+              "he",
+              "uk",
+              "el",
+              "ms",
+              "cs",
+              "ro",
+              "da",
+              "hu",
+              "ta",
+              "no",
+              "th",
+              "ur",
+              "hr",
+              "bg",
+              "lt",
+              "la",
+              "mi",
+              "ml",
+              "cy",
+              "sk",
+              "te",
+              "fa",
+              "lv",
+              "bn",
+              "sr",
+              "az",
+              "sl",
+              "kn",
+              "et",
+              "mk",
+              "br",
+              "eu",
+              "is",
+              "hy",
+              "ne",
+              "mn",
+              "bs",
+              "kk",
+              "sq",
+              "sw",
+              "gl",
+              "mr",
+              "pa",
+              "si",
+              "km",
+              "sn",
+              "yo",
+              "so",
+              "af",
+              "oc",
+              "ka",
+              "be",
+              "tg",
+              "sd",
+              "gu",
+              "am",
+              "yi",
+              "lo",
+              "uz",
+              "fo",
+              "ht",
+              "ps",
+              "tk",
+              "nn",
+              "mt",
+              "sa",
+              "lb",
+              "my",
+              "bo",
+              "tl",
+              "mg",
+              "as",
+              "tt",
+              "haw",
+              "ln",
+              "ha",
+              "ba",
+              "jw",
+              "su",
+              "yue"
+            ]
           },
           "skipSilence": {
             "title": "Skip silence",
@@ -146,7 +269,8 @@
                 "auto": "Automatic",
                 "cpu": "Processor",
                 "gpu": "Graphics card"
-              }
+              },
+              "type": "device"
             }
           }
         },
@@ -253,7 +377,7 @@
               ]
             },
             "x-ui": {
-              "type": "timedText"
+              "type": "transcript"
             }
           },
           "device": {
@@ -328,7 +452,6 @@
     "detectLanguage": {
       "description": "Says which language is spoken in a video or a sound, from its first seconds, with how sure it is and the next most likely languages. Use it before transcribe when the language is not known, or to sort videos by language.",
       "title": "Detect the language",
-      "category": "find",
       "icon": "audio",
       "wants": {
         "media": {
@@ -359,8 +482,21 @@
             "default": "tiny",
             "x-ui": {
               "group": "everyday",
-              "widget": "select"
-            }
+              "widget": "select",
+              "type": "speechModel"
+            },
+            "enum": [
+              "tiny",
+              "tiny.en",
+              "base",
+              "base.en",
+              "small",
+              "small.en",
+              "medium",
+              "medium.en",
+              "large-v3",
+              "large-v3-turbo"
+            ]
           },
           "device": {
             "title": "Run on",
@@ -378,7 +514,8 @@
                 "auto": "Automatic",
                 "cpu": "Processor",
                 "gpu": "Graphics card"
-              }
+              },
+              "type": "device"
             }
           }
         },

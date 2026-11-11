@@ -3,8 +3,21 @@
   "version": "0.1.0",
   "title": "Music sync",
   "description": "Finds where a music starts inside a video's sound, so a better copy of the music can replace it.",
+  "category": "better-sound",
+  "tags": [
+    "music",
+    "sync",
+    "soundtrack"
+  ],
+  "home": "home.md",
   "protocol": 2,
-  "platforms": ["windows-x86_64", "linux-x86_64", "linux-aarch64", "macos-aarch64", "macos-x86_64"],
+  "platforms": [
+    "windows-x86_64",
+    "linux-x86_64",
+    "linux-aarch64",
+    "macos-aarch64",
+    "macos-x86_64"
+  ],
   "effect": "pure",
   "command": [
     "../../dist/cargo/release/loomasplugins-music-sync"
@@ -18,7 +31,6 @@
   "actions": {
     "findOffset": {
       "title": "Find where the music starts",
-      "category": "find",
       "icon": "music",
       "description": "Tells how the music lies on a video's timeline by comparing the two sounds, however different their quality: how late it starts and, when the video runs at another speed, how much slower or faster. Give offsetMs and speed to media.replaceAudio to put a high-quality copy of the music in the video.",
       "wants": {

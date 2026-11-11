@@ -12,7 +12,7 @@ Writes down **what is said** in a video or a sound, with the time each sentence 
 | `words` | give each sentence its words, with their times and confidence (default false) |
 | `skipSilence` | leave out the stretches the model thinks are most likely silence (default false) |
 | `beamSize` | how many alternatives are weighed, 1 to 10 (default 5) |
-| `device` | `auto` (what Loomas grants, else the first card), `cpu`, `gpu` or `gpu:N` |
+| `device` | `auto` (what Loomas grants, else the first card), `cpu` or `gpu` |
 
 It gives `{ language, durationMs, model, text, sentences, device }`. A sentence is `{ startMs, endMs, text, confidence }`, with `words` when asked. Its end is always after its start, so the sentences can go straight to [voice-tone](../voice-tone). `device` says what ran: `cpu` or `vulkan:N`, and in `fallback` why a card asked for was not used.
 

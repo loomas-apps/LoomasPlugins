@@ -3,6 +3,14 @@
   "version": "0.1.0",
   "title": "Find the movements of people",
   "description": "Follows the bodies of the people in a video and lists what moved: fast arms and legs, a striking motion towards another person, a fall, a person on the ground. It sees bodies, never faces or names, and it says what moved, never what it means.",
+  "category": "seen",
+  "tags": [
+    "pose",
+    "body",
+    "falls",
+    "fights"
+  ],
+  "home": "home.md",
   "protocol": 2,
   "platforms": [
     "windows-x86_64",
@@ -39,7 +47,6 @@
     "find": {
       "title": "Find the movements",
       "description": "Lists the movements of the people in a video: when each starts and ends, what was seen, how sure the measurement is, and which person (a number for this run, never an identity). Loomas gives it five pictures a second. It finds the keypoints of each body (shoulders, elbows, wrists, hips, knees, ankles), follows each person from picture to picture, and measures how fast the hands and feet move compared with the body, in torso lengths a second. It says what moved, never what it means: a fast arm is not an attack, a person on the ground is not hurt. The limits are guesses that were checked on made-up movements only, not on real footage: raise or lower them (armSpeed, legSpeed) after trying it on your own videos.",
-      "category": "analyse",
       "icon": "person",
       "wants": {
         "media": {
@@ -192,7 +199,8 @@
                 "auto": "Automatic",
                 "cpu": "Processor",
                 "gpu": "Graphics card"
-              }
+              },
+              "type": "device"
             }
           }
         },
@@ -268,7 +276,7 @@
               ]
             },
             "x-ui": {
-              "type": "timedLabel"
+              "type": "movements"
             }
           },
           "people": {

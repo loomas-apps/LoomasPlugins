@@ -3,6 +3,14 @@
   "version": "0.1.0",
   "title": "Rate how positive or negative the words are",
   "description": "Says how positive, neutral or negative each sentence of a transcript is, in English, Portuguese and ten other languages, with a model that runs on this computer. It rates the words, not the voice.",
+  "category": "feelings",
+  "tags": [
+    "sentiment",
+    "positive",
+    "negative",
+    "tone of words"
+  ],
+  "home": "home.md",
   "protocol": 2,
   "platforms": [
     "windows-x86_64",
@@ -38,7 +46,6 @@
     "analyze": {
       "title": "Rate the sentences",
       "description": "Rates each sentence of a transcript as positive, neutral or negative, with a score from -1 to 1, and gives an overall value. Connect the sentences of \"Speech to text\". It reads the words only: sarcasm, irony and a tone of voice that does not match the words are not understood. The model was trained on short texts such as reviews and social posts, so it is less sure on spoken language, and it was built for English, Portuguese, Spanish, French, German, Italian, Arabic, Hindi, Indonesian, Malay, Japanese and Chinese.",
-      "category": "analyse",
       "icon": "chart",
       "inputs": {
         "type": "object",
@@ -88,7 +95,8 @@
                 "auto": "Automatic",
                 "cpu": "Processor",
                 "gpu": "Graphics card"
-              }
+              },
+              "type": "device"
             }
           }
         },
@@ -186,7 +194,7 @@
               ]
             },
             "x-ui": {
-              "type": "timedLabel"
+              "type": "sentiments"
             }
           },
           "overall": {

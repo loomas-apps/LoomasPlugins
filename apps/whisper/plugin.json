@@ -3,6 +3,15 @@
   "version": "0.1.0",
   "title": "Speech to text (whisper.cpp)",
   "description": "Writes down what is said in a video or a sound, with the time each sentence starts and ends, using whisper.cpp. It runs on the processor or on a graphics card through Vulkan (AMD, NVIDIA, Intel); its inputs and outputs are those of speech-to-text.",
+  "category": "speech",
+  "tags": [
+    "transcription",
+    "subtitles",
+    "whisper",
+    "language",
+    "vulkan"
+  ],
+  "home": "home.md",
   "protocol": 2,
   "effect": "pure",
   "platforms": [
@@ -39,7 +48,6 @@
     "transcribe": {
       "description": "Writes down the sentences said in a video or a sound, with the time each starts and ends. The core may run it a window of the media at a time and join the result: the sentences are joined, text is put together from them and durationMs is the whole media's; language and model are the first window's.",
       "title": "Transcribe speech",
-      "category": "find",
       "icon": "speech",
       "inputs": {
         "type": "object",
@@ -63,7 +71,8 @@
             "default": "base",
             "x-ui": {
               "group": "everyday",
-              "widget": "select"
+              "widget": "select",
+              "type": "speechModel"
             },
             "enum": [
               "tiny",
@@ -84,8 +93,111 @@
             "description": "The language as a code such as en or pt (default: found out from the first seconds).",
             "x-ui": {
               "group": "everyday",
-              "widget": "select"
-            }
+              "widget": "select",
+              "type": "language"
+            },
+            "enum": [
+              "en",
+              "zh",
+              "de",
+              "es",
+              "ru",
+              "ko",
+              "fr",
+              "ja",
+              "pt",
+              "tr",
+              "pl",
+              "ca",
+              "nl",
+              "ar",
+              "sv",
+              "it",
+              "id",
+              "hi",
+              "fi",
+              "vi",
+              "he",
+              "uk",
+              "el",
+              "ms",
+              "cs",
+              "ro",
+              "da",
+              "hu",
+              "ta",
+              "no",
+              "th",
+              "ur",
+              "hr",
+              "bg",
+              "lt",
+              "la",
+              "mi",
+              "ml",
+              "cy",
+              "sk",
+              "te",
+              "fa",
+              "lv",
+              "bn",
+              "sr",
+              "az",
+              "sl",
+              "kn",
+              "et",
+              "mk",
+              "br",
+              "eu",
+              "is",
+              "hy",
+              "ne",
+              "mn",
+              "bs",
+              "kk",
+              "sq",
+              "sw",
+              "gl",
+              "mr",
+              "pa",
+              "si",
+              "km",
+              "sn",
+              "yo",
+              "so",
+              "af",
+              "oc",
+              "ka",
+              "be",
+              "tg",
+              "sd",
+              "gu",
+              "am",
+              "yi",
+              "lo",
+              "uz",
+              "fo",
+              "ht",
+              "ps",
+              "tk",
+              "nn",
+              "mt",
+              "sa",
+              "lb",
+              "my",
+              "bo",
+              "tl",
+              "mg",
+              "as",
+              "tt",
+              "haw",
+              "ln",
+              "ha",
+              "ba",
+              "jw",
+              "su",
+              "yue"
+            ]
           },
           "skipSilence": {
             "title": "Skip silence",
@@ -122,8 +234,14 @@
             "default": "auto",
             "description": "Where the speech model runs: auto takes what Loomas grants (else the first graphics card); cpu always uses the processor; gpu or gpu:N asks for a graphics card through Vulkan (AMD, NVIDIA and Intel). A build without Vulkan runs on the processor and says so in device.fallback.",
             "x-ui": {
-              "group": "advanced"
-            }
+              "group": "advanced",
+              "type": "device"
+            },
+            "enum": [
+              "auto",
+              "cpu",
+              "gpu"
+            ]
           }
         },
         "required": [
@@ -223,7 +341,7 @@
               ]
             },
             "x-ui": {
-              "type": "timedText"
+              "type": "transcript"
             }
           },
           "device": {

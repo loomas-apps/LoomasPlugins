@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "title": "Example plugin",
   "description": "A plugin for testing how the core copes: it pretends to find things, fails, hangs and crashes on request.",
+  "category": "test",
   "protocol": 2,
   "effect": "pure",
   "command": [

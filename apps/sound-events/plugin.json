@@ -3,8 +3,21 @@
   "version": "0.1.0",
   "title": "Find sounds",
   "description": "Finds the sounds a video has from the 521 classes of AudioSet (speech, music, meow, bark, siren...) with a small tagger and no language model.",
+  "category": "heard",
+  "tags": [
+    "sounds",
+    "music",
+    "speech",
+    "audioset"
+  ],
+  "home": "home.md",
   "protocol": 2,
-  "platforms": ["windows-x86_64", "linux-x86_64", "linux-aarch64", "macos-aarch64"],
+  "platforms": [
+    "windows-x86_64",
+    "linux-x86_64",
+    "linux-aarch64",
+    "macos-aarch64"
+  ],
   "effect": "pure",
   "command": [
     "../../dist/cargo/release/loomasplugins-sound-events"
@@ -32,7 +45,6 @@
     "find": {
       "description": "Finds the sounds a video has, from the 521 classes of AudioSet (speech, music, cat, meow, dog, bark, siren, door...), with a small neural tagger and no language model. Each time a sound is heard it gives one event with its start and end and a clip of it; a sound that goes on is one event.",
       "title": "Find sounds",
-      "category": "find",
       "icon": "sound",
       "wants": {
         "media": {
@@ -674,7 +686,8 @@
                 "auto": "Automatic",
                 "cpu": "Processor",
                 "gpu": "Graphics card"
-              }
+              },
+              "type": "device"
             }
           }
         },
@@ -1285,7 +1298,7 @@
               ]
             },
             "x-ui": {
-              "type": "timedLabel"
+              "type": "soundEvents"
             }
           },
           "frames": {

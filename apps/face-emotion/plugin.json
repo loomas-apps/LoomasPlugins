@@ -3,8 +3,20 @@
   "version": "0.1.0",
   "title": "Face expressions",
   "description": "Finds the faces in a video, follows each one, and says which expression it shows over time (angry, disgust, fear, happy, neutral, sad, surprise). It never says who a face is. No language model.",
+  "category": "feelings",
+  "tags": [
+    "faces",
+    "emotion",
+    "expression"
+  ],
+  "home": "home.md",
   "protocol": 2,
-  "platforms": ["windows-x86_64", "linux-x86_64", "linux-aarch64", "macos-aarch64"],
+  "platforms": [
+    "windows-x86_64",
+    "linux-x86_64",
+    "linux-aarch64",
+    "macos-aarch64"
+  ],
   "effect": "pure",
   "command": [
     "../../dist/cargo/release/loomasplugins-face-emotion"
@@ -33,7 +45,6 @@
     "find": {
       "description": "Finds the faces in a video (two pictures a second), follows each one from picture to picture, and gives the stretches where a face keeps one expression: angry, disgust, fear, happy, neutral, sad or surprise. Faces are numbered face-1, face-2... in the order they show; the plugin never says who a face is.",
       "title": "Find face expressions",
-      "category": "find",
       "icon": "picture",
       "wants": {
         "media": {
@@ -48,9 +59,14 @@
         "properties": {
           "media": {
             "title": "Video",
-            "type": ["object", "string"],
+            "type": [
+              "object",
+              "string"
+            ],
             "description": "The video: a video as media.open gives it. Loomas decodes two colour pictures a second of it, 640 pixels wide.",
-            "x-ui": { "group": "everyday" }
+            "x-ui": {
+              "group": "everyday"
+            }
           },
           "minFaceScore": {
             "title": "Least face score",
@@ -59,7 +75,10 @@
             "maximum": 1,
             "default": 0.7,
             "description": "How sure the detector must be that it is a face (default 0.7).",
-            "x-ui": { "group": "everyday", "widget": "slider" }
+            "x-ui": {
+              "group": "everyday",
+              "widget": "slider"
+            }
           },
           "minFaceWidth": {
             "title": "Smallest face",
@@ -68,7 +87,10 @@
             "maximum": 400,
             "default": 24,
             "description": "Faces narrower than this, in pixels of the 640-wide picture, are followed but get no expression: too few pixels to read one (default 24).",
-            "x-ui": { "group": "advanced", "unit": "px" }
+            "x-ui": {
+              "group": "advanced",
+              "unit": "px"
+            }
           },
           "gapMs": {
             "title": "Longest gap",
@@ -77,7 +99,10 @@
             "maximum": 600000,
             "default": 1000,
             "description": "How long an expression can stop before it counts as over; if it comes back that is another stretch (default 1000).",
-            "x-ui": { "group": "advanced", "unit": "ms" }
+            "x-ui": {
+              "group": "advanced",
+              "unit": "ms"
+            }
           },
           "minSamples": {
             "title": "Fewest pictures",
@@ -86,21 +111,34 @@
             "maximum": 100,
             "default": 1,
             "description": "In how few pictures (half a second apart) an expression is still reported (default 1; raise it to ignore one-picture blips).",
-            "x-ui": { "group": "advanced" }
+            "x-ui": {
+              "group": "advanced"
+            }
           },
           "device": {
             "title": "Run on",
             "type": "string",
-            "enum": ["auto", "cpu", "gpu"],
+            "enum": [
+              "auto",
+              "cpu",
+              "gpu"
+            ],
             "default": "auto",
             "description": "Where the models run: auto (the default: what Loomas grants), cpu, or gpu. A card that cannot be used falls back to the processor; the result says what ran.",
             "x-ui": {
               "group": "advanced",
-              "enumTitles": { "auto": "Automatic", "cpu": "Processor", "gpu": "Graphics card" }
+              "enumTitles": {
+                "auto": "Automatic",
+                "cpu": "Processor",
+                "gpu": "Graphics card"
+              },
+              "type": "device"
             }
           }
         },
-        "required": ["media"],
+        "required": [
+          "media"
+        ],
         "additionalProperties": false
       },
       "outputs": {
@@ -113,17 +151,65 @@
             "items": {
               "type": "object",
               "properties": {
-                "label": { "title": "Expression", "type": "string", "enum": ["angry", "disgust", "fear", "happy", "neutral", "sad", "surprise"] },
-                "face": { "title": "Face", "type": "string", "description": "face-1, face-2...: the same face from picture to picture, never who it is." },
-                "startMs": { "title": "Start", "type": "integer", "minimum": 0 },
-                "endMs": { "title": "End", "type": "integer", "minimum": 0 },
-                "confidence": { "title": "Confidence", "type": "number", "minimum": 0, "maximum": 1, "description": "The mean probability of the expression over its pictures." },
-                "samples": { "title": "Pictures", "type": "integer", "minimum": 1 },
-                "box": { "title": "Where the face was", "type": "object", "description": "x, y, width and height as shares of the picture (0 to 1), when the stretch began." }
+                "label": {
+                  "title": "Expression",
+                  "type": "string",
+                  "enum": [
+                    "angry",
+                    "disgust",
+                    "fear",
+                    "happy",
+                    "neutral",
+                    "sad",
+                    "surprise"
+                  ]
+                },
+                "face": {
+                  "title": "Face",
+                  "type": "string",
+                  "description": "face-1, face-2...: the same face from picture to picture, never who it is."
+                },
+                "startMs": {
+                  "title": "Start",
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "endMs": {
+                  "title": "End",
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "confidence": {
+                  "title": "Confidence",
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1,
+                  "description": "The mean probability of the expression over its pictures."
+                },
+                "samples": {
+                  "title": "Pictures",
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "box": {
+                  "title": "Where the face was",
+                  "type": "object",
+                  "description": "x, y, width and height as shares of the picture (0 to 1), when the stretch began."
+                }
               },
-              "required": ["label", "face", "startMs", "endMs", "confidence", "samples", "box"]
+              "required": [
+                "label",
+                "face",
+                "startMs",
+                "endMs",
+                "confidence",
+                "samples",
+                "box"
+              ]
             },
-            "x-ui": { "type": "timedLabel" }
+            "x-ui": {
+              "type": "faceExpressions"
+            }
           },
           "faces": {
             "title": "Faces",
@@ -132,29 +218,80 @@
             "items": {
               "type": "object",
               "properties": {
-                "face": { "title": "Face", "type": "string" },
-                "startMs": { "title": "First seen", "type": "integer", "minimum": 0 },
-                "endMs": { "title": "Last seen", "type": "integer", "minimum": 0 },
-                "samples": { "title": "Pictures", "type": "integer", "minimum": 1 }
+                "face": {
+                  "title": "Face",
+                  "type": "string"
+                },
+                "startMs": {
+                  "title": "First seen",
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "endMs": {
+                  "title": "Last seen",
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "samples": {
+                  "title": "Pictures",
+                  "type": "integer",
+                  "minimum": 1
+                }
               },
-              "required": ["face", "startMs", "endMs", "samples"]
+              "required": [
+                "face",
+                "startMs",
+                "endMs",
+                "samples"
+              ]
+            },
+            "x-ui": {
+              "type": "faceTracks"
             }
           },
-          "samples": { "title": "Pictures looked at", "type": "integer", "minimum": 0 },
-          "durationMs": { "title": "Length", "type": "integer", "minimum": 0 },
+          "samples": {
+            "title": "Pictures looked at",
+            "type": "integer",
+            "minimum": 0
+          },
+          "durationMs": {
+            "title": "Length",
+            "type": "integer",
+            "minimum": 0
+          },
           "device": {
             "title": "What it ran on",
-            "type": ["object", "null"],
+            "type": [
+              "object",
+              "null"
+            ],
             "description": "What the face model really ran on: device, name (the graphics card, if one was used) and fallback (why not). Null when no picture was looked at."
           }
         },
-        "required": ["expressions", "faces", "samples", "durationMs"]
+        "required": [
+          "expressions",
+          "faces",
+          "samples",
+          "durationMs"
+        ]
       },
       "failures": [
-        { "code": 400, "description": "A param is wrong, or media is missing or not a video Loomas decoded for the plugin." },
-        { "code": 422, "description": "A file cannot be read or a model cannot be loaded." },
-        { "code": 503, "description": "A model could not be downloaded (they are fetched once, on first use). Trying again may work." },
-        { "code": "CANCELLED", "description": "The call was cancelled." }
+        {
+          "code": 400,
+          "description": "A param is wrong, or media is missing or not a video Loomas decoded for the plugin."
+        },
+        {
+          "code": 422,
+          "description": "A file cannot be read or a model cannot be loaded."
+        },
+        {
+          "code": 503,
+          "description": "A model could not be downloaded (they are fetched once, on first use). Trying again may work."
+        },
+        {
+          "code": "CANCELLED",
+          "description": "The call was cancelled."
+        }
       ]
     }
   }

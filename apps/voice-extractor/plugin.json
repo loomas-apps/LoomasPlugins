@@ -3,8 +3,20 @@
   "version": "0.1.0",
   "title": "Voice extractor",
   "description": "Splits the sound of a video into the voice and the rest. Optional: it does not reliably improve speech-to-text.",
+  "category": "better-sound",
+  "tags": [
+    "voice",
+    "vocals",
+    "separation"
+  ],
+  "home": "home.md",
   "protocol": 2,
-  "platforms": ["windows-x86_64", "linux-x86_64", "linux-aarch64", "macos-aarch64"],
+  "platforms": [
+    "windows-x86_64",
+    "linux-x86_64",
+    "linux-aarch64",
+    "macos-aarch64"
+  ],
   "effect": "pure",
   "command": [
     "../../dist/cargo/release/loomasplugins-voice-extractor"
@@ -32,7 +44,6 @@
     "extract": {
       "description": "Splits the sound of a video into the voice and the rest, with DeepFilterNet3: the voice is what a speech-enhancement network keeps, the rest is what it took out (it is not clean: some of the voice stays in it). Each track is given in a form the next plugin can read directly (speech-to-text on the voice, sound-events on the rest), and as a WAV file in the result when asked.",
       "title": "Extract the voice",
-      "category": "transform",
       "icon": "voice",
       "wants": {
         "media": {
@@ -119,7 +130,8 @@
                 "auto": "Automatic",
                 "cpu": "Processor",
                 "gpu": "Graphics card"
-              }
+              },
+              "type": "device"
             }
           }
         },

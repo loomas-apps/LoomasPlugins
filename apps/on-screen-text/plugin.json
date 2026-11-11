@@ -3,6 +3,14 @@
   "version": "0.1.0",
   "title": "Read the text on the screen",
   "description": "Reads the text a video shows (titles, subtitles burnt into the picture, signs, captions) with PaddleOCR networks that run on this computer, and says when each text is on the screen and where.",
+  "category": "seen",
+  "tags": [
+    "ocr",
+    "subtitles",
+    "titles",
+    "signs"
+  ],
+  "home": "home.md",
   "protocol": 2,
   "platforms": [
     "windows-x86_64",
@@ -38,7 +46,6 @@
     "find": {
       "title": "Find the text on the screen",
       "description": "Reads the text a video shows and lists each text with when it is on the screen, where it is and how sure the reading is. A text that stays on the screen is one entry, even when one picture reads a letter wrong. Loomas gives it one picture a second, so a text that is on the screen for less than a second can be missed. It reads printed text in lines of one script at a time: pick the script with language. Handwriting, text on a curve or turned on its side, and very small or blurred text are read badly.",
-      "category": "analyse",
       "icon": "text",
       "wants": {
         "media": {
@@ -164,7 +171,8 @@
                 "auto": "Automatic",
                 "cpu": "Processor",
                 "gpu": "Graphics card"
-              }
+              },
+              "type": "device"
             }
           }
         },
@@ -258,7 +266,7 @@
               ]
             },
             "x-ui": {
-              "type": "timedText"
+              "type": "textOnScreen"
             }
           },
           "samples": {

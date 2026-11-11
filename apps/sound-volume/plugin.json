@@ -3,8 +3,21 @@
   "version": "0.1.0",
   "title": "Sound volume",
   "description": "Measures how loud the sound is over time and where it is silent.",
+  "category": "heard",
+  "tags": [
+    "loudness",
+    "silence",
+    "volume"
+  ],
+  "home": "home.md",
   "protocol": 2,
-  "platforms": ["windows-x86_64", "linux-x86_64", "linux-aarch64", "macos-aarch64", "macos-x86_64"],
+  "platforms": [
+    "windows-x86_64",
+    "linux-x86_64",
+    "linux-aarch64",
+    "macos-aarch64",
+    "macos-x86_64"
+  ],
   "effect": "pure",
   "command": [
     "../../dist/cargo/release/loomasplugins-sound-volume"
@@ -15,7 +28,6 @@
     "map": {
       "description": "How loud the sound is over time: level and peak per window, and the level of the low, mid and high bands.",
       "title": "Measure the volume",
-      "category": "find",
       "icon": "volume",
       "wants": {
         "audio": {
@@ -187,7 +199,7 @@
               ]
             },
             "x-ui": {
-              "type": "series"
+              "type": "loudness"
             }
           },
           "summary": {
@@ -273,7 +285,6 @@
     "silences": {
       "description": "The stretches where the sound stays below a level for at least a time.",
       "title": "Find silences",
-      "category": "find",
       "icon": "silence",
       "wants": {
         "audio": {
@@ -387,7 +398,7 @@
               ]
             },
             "x-ui": {
-              "type": "timed"
+              "type": "silences"
             }
           },
           "totalSilenceMs": {

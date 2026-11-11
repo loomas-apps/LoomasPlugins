@@ -3,6 +3,13 @@
   "version": "0.1.0",
   "title": "Thumbnails",
   "description": "Chooses the pictures that show a video best.",
+  "category": "pictures-files",
+  "tags": [
+    "thumbnail",
+    "contact sheet",
+    "pictures"
+  ],
+  "home": "home.md",
   "protocol": 2,
   "platforms": [
     "windows-x86_64",
@@ -26,7 +33,6 @@
     "pick": {
       "description": "Chooses the pictures that show a video best: sharp, well exposed, not a black or washed out frame, and not all from the same scene. Gives the times to take them at.",
       "title": "Pick the best pictures",
-      "category": "find",
       "icon": "image",
       "wants": {
         "media": {
@@ -161,7 +167,6 @@
     "sheet": {
       "description": "Makes one picture that shows a video as a grid of small pictures from along it, spread from the start to the end, and says when each one is from. Use it to see a video at a glance.",
       "title": "Contact sheet",
-      "category": "media",
       "icon": "image",
       "wants": {
         "media": {

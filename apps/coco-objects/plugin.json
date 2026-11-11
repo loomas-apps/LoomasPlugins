@@ -3,8 +3,21 @@
   "version": "0.1.0",
   "title": "Find objects",
   "description": "Finds the things a video shows from the 80 classes of the COCO set (person, cat, dog, car...) with a fast detector and no language model.",
+  "category": "seen",
+  "tags": [
+    "objects",
+    "people",
+    "animals",
+    "detection"
+  ],
+  "home": "home.md",
   "protocol": 2,
-  "platforms": ["windows-x86_64", "linux-x86_64", "linux-aarch64", "macos-aarch64"],
+  "platforms": [
+    "windows-x86_64",
+    "linux-x86_64",
+    "linux-aarch64",
+    "macos-aarch64"
+  ],
   "effect": "pure",
   "command": [
     "../../dist/cargo/release/loomasplugins-coco-objects"
@@ -32,7 +45,6 @@
     "find": {
       "description": "Finds the things a video shows, from the 80 classes of the COCO set (person, cat, dog, car...), with a detector and no language model. Each time a class shows up it gives one appearance with the first picture it is in and the time; a class that stays on screen is reported once, when it first shows.",
       "title": "Find objects",
-      "category": "find",
       "icon": "object",
       "wants": {
         "media": {
@@ -186,7 +198,8 @@
                 "auto": "Automatic",
                 "cpu": "Processor",
                 "gpu": "Graphics card"
-              }
+              },
+              "type": "device"
             }
           },
           "minConfidence": {
@@ -405,7 +418,7 @@
               ]
             },
             "x-ui": {
-              "type": "timedLabel"
+              "type": "objectsSeen"
             }
           },
           "samples": {

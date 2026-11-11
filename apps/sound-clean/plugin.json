@@ -3,8 +3,22 @@
   "version": "0.1.0",
   "title": "Sound cleaner",
   "description": "Takes steady noise (a hum, a fan, hiss) out of a sound and hands the cleaned sound to the next plugin.",
+  "category": "better-sound",
+  "tags": [
+    "noise",
+    "hum",
+    "hiss",
+    "denoise"
+  ],
+  "home": "home.md",
   "protocol": 2,
-  "platforms": ["windows-x86_64", "linux-x86_64", "linux-aarch64", "macos-aarch64", "macos-x86_64"],
+  "platforms": [
+    "windows-x86_64",
+    "linux-x86_64",
+    "linux-aarch64",
+    "macos-aarch64",
+    "macos-x86_64"
+  ],
   "effect": "pure",
   "command": [
     "../../dist/cargo/release/loomasplugins-sound-clean"
@@ -18,7 +32,6 @@
     "reduceNoise": {
       "description": "Takes steady noise (a hum, a fan, hiss) out of a sound and hands the cleaned sound to the next plugin.",
       "title": "Reduce noise",
-      "category": "transform",
       "icon": "sound-clean",
       "wants": {
         "audio": {

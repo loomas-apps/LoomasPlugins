@@ -3,8 +3,21 @@
   "version": "0.1.0",
   "title": "Find what a phrase describes",
   "description": "Finds when a phrase you write (\"two cats sleeping on a couch\") describes what a video shows, with an image-text model.",
+  "category": "seen",
+  "tags": [
+    "search",
+    "scenes",
+    "clip",
+    "description"
+  ],
+  "home": "home.md",
   "protocol": 2,
-  "platforms": ["windows-x86_64", "linux-x86_64", "linux-aarch64", "macos-aarch64"],
+  "platforms": [
+    "windows-x86_64",
+    "linux-x86_64",
+    "linux-aarch64",
+    "macos-aarch64"
+  ],
   "effect": "pure",
   "command": [
     "../../dist/cargo/release/loomasplugins-visual-phrases"
@@ -32,7 +45,6 @@
     "find": {
       "description": "Finds when a phrase describes what a video shows (\"two cats sleeping on a couch\", \"a red car\", \"a person skiing\"), with an image-text model and no language model. Any phrase works, with no fixed list of classes. For each phrase it gives one appearance each time it holds, with the first picture and the time; a phrase that stays true is one appearance.",
       "title": "Find what a phrase describes",
-      "category": "find",
       "icon": "image-search",
       "wants": {
         "media": {
@@ -88,7 +100,8 @@
                 "auto": "Automatic (graphics card if there is a discrete one)",
                 "cpu": "Processor",
                 "gpu": "Graphics card"
-              }
+              },
+              "type": "device"
             }
           },
           "minConfidence": {
@@ -220,7 +233,7 @@
               ]
             },
             "x-ui": {
-              "type": "timedLabel"
+              "type": "phrasesSeen"
             }
           },
           "samples": {

@@ -3,8 +3,21 @@
   "version": "0.1.0",
   "title": "Sound graph",
   "description": "Draws the waves of a sound as a picture, with stretches marked on it.",
+  "category": "pictures-files",
+  "tags": [
+    "waveform",
+    "picture",
+    "svg"
+  ],
+  "home": "home.md",
   "protocol": 2,
-  "platforms": ["windows-x86_64", "linux-x86_64", "linux-aarch64", "macos-aarch64", "macos-x86_64"],
+  "platforms": [
+    "windows-x86_64",
+    "linux-x86_64",
+    "linux-aarch64",
+    "macos-aarch64",
+    "macos-x86_64"
+  ],
   "effect": "pure",
   "command": [
     "../../dist/cargo/release/loomasplugins-sound-graph"
@@ -15,7 +28,6 @@
     "waveform": {
       "description": "Draws the waves of a sound as an SVG picture, with the stretches you give marked behind them and a time axis under them.",
       "title": "Draw the sound waves",
-      "category": "transform",
       "icon": "waveform",
       "wants": {
         "audio": {
@@ -150,7 +162,8 @@
               ]
             },
             "x-ui": {
-              "group": "everyday"
+              "group": "everyday",
+              "type": "timed"
             }
           },
           "sampleRate": {

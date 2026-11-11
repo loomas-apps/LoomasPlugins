@@ -3,6 +3,13 @@
   "version": "0.1.0",
   "title": "Upscale video",
   "description": "Makes a video larger, two or four times, with a Real-ESRGAN network that adds detail, or with plain Lanczos scaling. It runs on the graphics card when the host grants one. No language model.",
+  "category": "better-video",
+  "tags": [
+    "upscale",
+    "resolution",
+    "esrgan"
+  ],
+  "home": "home.md",
   "protocol": 2,
   "platforms": [
     "windows-x86_64",
@@ -38,7 +45,6 @@
     "upscale": {
       "description": "Makes a video larger. Loomas decodes every picture of it; the plugin makes each one four times larger with the network you choose (cut in pieces, so large pictures fit in the memory of the graphics card), scales to the size you ask for and encodes an MP4 with FFmpeg. The new video has no sound: the plugin sees pictures only, so add the sound of the source again in a later step.",
       "title": "Upscale video",
-      "category": "transform",
       "icon": "scale",
       "wants": {
         "media": {
@@ -116,7 +122,8 @@
                 "auto": "Automatic",
                 "cpu": "Processor",
                 "gpu": "Graphics card"
-              }
+              },
+              "type": "device"
             }
           },
           "tile": {

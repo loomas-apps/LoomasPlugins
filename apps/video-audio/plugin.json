@@ -3,6 +3,14 @@
   "version": "0.1.0",
   "title": "Audio files",
   "description": "Writes the sound of a video as an audio file: the format, the sample rate, the channels, a stretch and the track you choose, or at a loudness you set.",
+  "category": "pictures-files",
+  "tags": [
+    "audio",
+    "export",
+    "loudness",
+    "normalize"
+  ],
+  "home": "home.md",
   "protocol": 2,
   "platforms": [
     "windows-x86_64",
@@ -34,7 +42,6 @@
     "extract": {
       "description": "Writes the sound of a video, or a stretch of it, as an audio file in the format, sample rate and channels you choose, from the audio track you choose. Use it when another step needs a particular kind of audio, such as 16 kHz mono for speech models.",
       "title": "Extract the audio",
-      "category": "media",
       "icon": "audio",
       "inputs": {
         "type": "object",
@@ -209,7 +216,7 @@
     "normalize": {
       "description": "Writes the sound of a video, or a stretch of it, at a loudness you set, so videos can be compared and heard at one level. It measures the sound first and then changes it by a straight gain, so the dynamics stay. A silent sound cannot be normalised.",
       "title": "Set the loudness",
-      "category": "media",
+      "category": "better-sound",
       "icon": "audio",
       "inputs": {
         "type": "object",
